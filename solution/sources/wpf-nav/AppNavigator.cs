@@ -11,11 +11,6 @@ namespace WpfNav
         //  routes
         //  frame
 
-        public Frame Frame
-        {
-            get => provideFrame();
-        }
-
         private readonly ProvideFrame provideFrame;
 
         public AppNavigator(ProvideFrame provideFrame)
@@ -25,7 +20,7 @@ namespace WpfNav
 
         public void NavigateTo(Uri uri)
         {
-            Frame.Source = uri;
+            provideFrame().Source = uri;
         }
     }
     

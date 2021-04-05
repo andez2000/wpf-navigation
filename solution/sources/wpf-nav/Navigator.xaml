@@ -7,7 +7,7 @@
       mc:Ignorable="d"
       Title="Navigator" Height="450" Width="800">
     <StackPanel>
-        <Button>View 1</Button>
-        <Button>View 2</Button>
+        <Button Click="View1_OnClick">View 1</Button>
+        <Button Click="View2_OnClick">View 2</Button>
     </StackPanel>
 </Page>
