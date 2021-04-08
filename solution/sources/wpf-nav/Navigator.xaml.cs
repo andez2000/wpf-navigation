@@ -28,4 +28,6 @@ namespace WpfNav
             _appNavigator.NavigateTo(new Uri("/View2.xaml"));
         }
     }
+    
+    //XpfXamlLoader;
 }
