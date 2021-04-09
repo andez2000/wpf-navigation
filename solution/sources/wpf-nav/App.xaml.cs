@@ -24,15 +24,16 @@ namespace WpfNav
                 .UseDefaultServiceProvider(x => x.ValidateOnBuild = true)
                 .ConfigureServices((context, services) => { ConfigureServices(services); })
                 .Build();
-            
-            
+
+            Services = host.Services;
         }
 
         private void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<MainWindow>();
+            
             services.AddAppNavigator(() => host.Services.GetService<MainWindow>()?.NavigationHost);
-
-            NavigationService navigationService = null;
+            //NavigationService navigationService = null;
         }
 
         protected override void OnNavigating(NavigatingCancelEventArgs e)
@@ -62,5 +63,6 @@ namespace WpfNav
         }
 
         private IHost host;
+        public static IServiceProvider Services;
     }
 }

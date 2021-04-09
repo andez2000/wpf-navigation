@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:WpfNav"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Frame x:Name="NavigationHost" Source="Navigator.xaml"></Frame>
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <Label>Navigate:</Label>
+        <Frame x:Name="Navigation"></Frame>
+        
+        <Label>Content:</Label>
+        <Frame x:Name="NavigationHost" Background="Aqua" Height="100" Width="600"></Frame>
+    </StackPanel>
 </Window>

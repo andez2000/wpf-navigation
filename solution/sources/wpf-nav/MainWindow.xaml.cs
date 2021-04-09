@@ -23,6 +23,8 @@ namespace WpfNav
         public MainWindow()
         {
             InitializeComponent();
+
+            Navigation.Content = new Navigator((AppNavigator)App.Services.GetService(typeof(AppNavigator)));
         }
     }
 }

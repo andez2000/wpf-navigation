@@ -20,7 +20,11 @@ namespace WpfNav
 
         public void NavigateTo(Uri uri)
         {
-            provideFrame().Source = uri;
+            var frame = provideFrame();
+            //frame.Content = null;
+            frame.Source = uri;
+            
+            //frame.NavigationService.LoadCompleted += (sender, args) => frame.NavigationService.Refresh(); 
         }
     }
     
@@ -28,11 +32,6 @@ namespace WpfNav
 
     public static class AppNavigatorExtensions
     {
-        // public static IHostBuilder AddAppNavigator(this IHostBuilder hostBuilder)
-        // {
-        //     return hostBuilder;
-        // }
-        
         public static IServiceCollection AddAppNavigator(this IServiceCollection serviceCollection, ProvideFrame provideFrame)
         {
             serviceCollection.AddSingleton(new AppNavigator(provideFrame));

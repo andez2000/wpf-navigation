@@ -6,5 +6,7 @@
       xmlns:local="clr-namespace:WpfNav"
       mc:Ignorable="d"
       Title="View1" Height="450" Width="800">
-        Hello from View 1
+    <Grid>
+        <Label>Hello from view 1</Label>
+    </Grid>
 </Page>
