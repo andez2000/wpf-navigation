@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Baml2006;
 using System.Windows.Navigation;
-using System.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -26,6 +19,8 @@ namespace WpfNav
                 .Build();
 
             Services = host.Services;
+            
+            // App.Current.StartupUri = new Uri("Scenario2Window.xaml", UriKind.Absolute);
 
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
@@ -36,8 +31,9 @@ namespace WpfNav
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<Scenario2Window>();
             
-            //services.AddAppNavigator(() => host.Services.GetService<MainWindow>()?.NavigationHost);
+            services.AddAppNavigator(() => host.Services.GetService<MainWindow>()?.NavigationHost);
             //NavigationService navigationService = null;
         }
 

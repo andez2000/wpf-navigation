@@ -11,9 +11,9 @@
             <Label DockPanel.Dock="Top">Navigate:</Label>
             <Frame x:Name="Navigation" />
         </DockPanel>
-        <!-- <DockPanel> -->
-        <!--     <Label DockPanel.Dock="Top">Content:</Label> -->
-        <!--     <Frame x:Name="NavigationHost" Background="Aqua"/> -->
-        <!-- </DockPanel> -->
+        <DockPanel>
+            <Label DockPanel.Dock="Top">Content:</Label>
+            <Frame x:Name="NavigationHost" Background="Aqua"/>
+        </DockPanel>
     </DockPanel>
 </Window>

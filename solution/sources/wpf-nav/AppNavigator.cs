@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace WpfNav
 {
@@ -22,8 +21,16 @@ namespace WpfNav
         {
             var frame = provideFrame();
             //frame.Content = null;
-            frame.Source = uri;
+            //frame.Source = uri;
             
+            // works if you pass in the calling page, but only navigates on that one!
+            // var navigationService = NavigationService.GetNavigationService((caller as DependencyObject)!);
+            //navigationService.Navigate(uri);
+            
+            //frame.NavigationService.Navigate(uri);
+            //frame.NavigationService.Refresh();
+            frame.NavigationService.Navigate(new View1());
+
             //frame.NavigationService.LoadCompleted += (sender, args) => frame.NavigationService.Refresh(); 
         }
     }
