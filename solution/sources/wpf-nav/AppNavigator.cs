@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace WpfNav
@@ -29,8 +30,8 @@ namespace WpfNav
             
             //frame.NavigationService.Navigate(uri);
             //frame.NavigationService.Refresh();
-            frame.NavigationService.Navigate(new View1());
-
+            frame.NavigationService.Navigate(uri);
+            var navigationService = NavigationService.GetNavigationService(frame);
             //frame.NavigationService.LoadCompleted += (sender, args) => frame.NavigationService.Refresh(); 
         }
     }
