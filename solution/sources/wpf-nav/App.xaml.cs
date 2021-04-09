@@ -26,13 +26,18 @@ namespace WpfNav
                 .Build();
 
             Services = host.Services;
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                Console.WriteLine(args);
+            };
         }
 
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
             
-            services.AddAppNavigator(() => host.Services.GetService<MainWindow>()?.NavigationHost);
+            //services.AddAppNavigator(() => host.Services.GetService<MainWindow>()?.NavigationHost);
             //NavigationService navigationService = null;
         }
 

@@ -22,13 +22,16 @@ namespace WpfNav
 
         private void View1_OnClick(object sender, RoutedEventArgs e)
         {
-            _appNavigator.NavigateTo(new Uri("pack://application:,,,/View1.xaml"));
+            // pack://application:,,,/
+            //_appNavigator.NavigateTo(new Uri("\\View1.xaml", UriKind.RelativeOrAbsolute));
+            Navigation.Source = new Uri("\\View1.xaml", UriKind.RelativeOrAbsolute);
         }
         
         private void View2_OnClick(object sender, RoutedEventArgs e)
         {
-            _appNavigator.NavigateTo(new Uri("pack://application:,,,/View2.xaml"));
-            Page x;
+            //_appNavigator.NavigateTo(new Uri("\\View2.xaml", UriKind.RelativeOrAbsolute));
+            
+            Navigation.Source = new Uri("\\View2.xaml", UriKind.RelativeOrAbsolute);
         }
     }
     

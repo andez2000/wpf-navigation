@@ -6,8 +6,15 @@
       xmlns:local="clr-namespace:WpfNav"
       mc:Ignorable="d"
       Title="Navigator" Height="450" Width="800">
-    <StackPanel>
-        <Button Click="View1_OnClick">View 1</Button>
-        <Button Click="View2_OnClick">View 2</Button>
-    </StackPanel>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <Button Click="View1_OnClick">View 1</Button>
+            <Button Click="View2_OnClick">View 2</Button>
+        </StackPanel>
+        <DockPanel>
+            <Label DockPanel.Dock="Top">Navigate:</Label>
+            <Frame x:Name="Navigation" />
+        </DockPanel>
+    </DockPanel>
+    
 </Page>
