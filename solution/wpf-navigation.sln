@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfNav", "sources\wpf-nav\wpf-nav.csproj", "{AA33A486-EB97-46F9-99DF-6833E6FCB976}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-dotnetcore-nav", "sources\wpf-dotnetcore-nav\wpf-dotnetcore-nav.csproj", "{AA33A486-EB97-46F9-99DF-6833E6FCB976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
