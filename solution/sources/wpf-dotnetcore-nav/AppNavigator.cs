@@ -32,8 +32,10 @@ namespace WpfNav
             //frame.NavigationService.Refresh();
             frame.NavigationService.Navigate(uri);
             var navigationService = NavigationService.GetNavigationService(frame);
-            //frame.NavigationService.LoadCompleted += (sender, args) => frame.NavigationService.Refresh(); 
+            //frame.NavigationService.LoadCompleted += (sender, args) => frame.NavigationService.Refresh();
         }
+        
+        
     }
     
     public delegate Frame ProvideFrame();

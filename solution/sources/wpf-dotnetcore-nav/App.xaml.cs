@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Navigation;
+using System.Xaml.Schema;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -40,25 +42,24 @@ namespace WpfNav
             MainWindow window = host.Services.GetService<MainWindow>();
             Debug.Assert(window != null, nameof(window) + " != null");
             window.Show();
-        }
-
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
             
+            // XamlTypeInvoker
+            //WpfXamlLoader.
+            //XamlReader
+            // Application.LoadComponent()
         }
-        
-        // [STAThreadAttribute]
-        // public static int Main(string[] args)
-        // {
-        //     App app = new App();
-        //
-        //     app.InitializeComponent();
-        //     app.Run();
-        //
-        //     return 0;
-        // }
 
-        
+        protected override void OnLoadCompleted(NavigationEventArgs e)
+        {
+            base.OnLoadCompleted(e);
+        }
+
+        protected override void OnNavigated(NavigationEventArgs e)
+        {
+            base.OnNavigated(e);
+        }
+
+
         private IHost host;
         public static IServiceProvider Services;
     }
