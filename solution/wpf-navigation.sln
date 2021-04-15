@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-dotnetcore-nav", "sources\wpf-dotnetcore-nav\wpf-dotnetcore-nav.csproj", "{AA33A486-EB97-46F9-99DF-6833E6FCB976}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "out-the-box", "out-the-box\out-the-box.csproj", "{E93147E2-60B9-4ACE-B63A-A06E9E676E6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{AA33A486-EB97-46F9-99DF-6833E6FCB976}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA33A486-EB97-46F9-99DF-6833E6FCB976}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA33A486-EB97-46F9-99DF-6833E6FCB976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E93147E2-60B9-4ACE-B63A-A06E9E676E6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E93147E2-60B9-4ACE-B63A-A06E9E676E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E93147E2-60B9-4ACE-B63A-A06E9E676E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E93147E2-60B9-4ACE-B63A-A06E9E676E6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
