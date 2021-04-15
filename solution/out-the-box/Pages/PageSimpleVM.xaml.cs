@@ -2,9 +2,9 @@
 
 namespace out_the_box.Pages
 {
-    public partial class PageWithSimpleVM : Page
+    public partial class PageSimpleVM : Page
     {
-        public PageWithSimpleVM()
+        public PageSimpleVM()
         {
             InitializeComponent();
         }

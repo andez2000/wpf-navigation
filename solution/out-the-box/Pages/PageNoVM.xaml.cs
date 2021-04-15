@@ -2,9 +2,9 @@
 
 namespace out_the_box.Pages
 {
-    public partial class PageNoViewModel : Page
+    public partial class PageNoVM : Page
     {
-        public PageNoViewModel()
+        public PageNoVM()
         {
             InitializeComponent();
         }
