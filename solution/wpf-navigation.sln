@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-nav", "sourc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-external-nav", "sources\wpf-codebehind-external-nav\wpf-codebehind-external-nav.csproj", "{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "external-page-lib", "sources\external-page-lib\external-page-lib.csproj", "{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +28,14 @@ Global
 		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
+		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 	EndGlobalSection
 EndGlobal

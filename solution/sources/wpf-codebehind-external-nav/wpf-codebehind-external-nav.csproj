@@ -7,4 +7,8 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\external-page-lib\external-page-lib.csproj" />
+    </ItemGroup>
+
 </Project>
