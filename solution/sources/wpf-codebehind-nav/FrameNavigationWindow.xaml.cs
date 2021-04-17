@@ -31,26 +31,5 @@ namespace acme.wpfapp
         {
             NavigationFrame.Content = new PageSimpleVM();
         }
-
-        private void ExternalUriToPageNoVM_OnClick(object sender, RoutedEventArgs e)
-        {
-            NavigationFrame.Navigate(new Uri(
-                @"D:\vcs\github\andez2000\wpf-navigation\external\Pages\ExternalPageNoVM.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void ExternalUriToPageSimpleVM_OnClick(object sender, RoutedEventArgs e)
-        {
-            // this all doesnt work
-            
-            // var loadComponent = (Page)Application.LoadComponent(new Uri(
-            //     @"D:\vcs\github\andez2000\wpf-navigation\external\Pages\ExternalPageSimpleVM.xaml",
-            //     UriKind.RelativeOrAbsolute));
-
-            // cannot create the vm in 
-
-            NavigationFrame.Navigate(
-                new Uri(
-                @"D:\vcs\github\andez2000\wpf-navigation\external\Pages\ExternalPageSimpleVM.xaml", UriKind.RelativeOrAbsolute));
-        }
     }
 }

@@ -8,12 +8,6 @@
         Title="FrameNavigationWindow" Height="450" Width="800">
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button Click="UriToPageNoVM_OnClick">Uri to Page No VM</Button>
-            <Button Click="UriToPageSimpleVM_OnClick">Uri to Page Simple VM</Button>
-            
-            <Button Click="ContentPageNoVM_OnClick">New Page No VM</Button>
-            <Button Click="ContentPageSimpleVM_OnClick">New Page Simple VM</Button>
-            
             <Button Click="ExternalUriToPageNoVM_OnClick">External Uri to Page No VM</Button>
             <Button Click="ExternalUriToPageSimpleVM_OnClick">External Uri to Page Simple VM</Button>
 
