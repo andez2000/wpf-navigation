@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-external-nav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "external-page-lib", "sources\external-page-lib\external-page-lib.csproj", "{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acme.bar.plainui", "sources\acme.bar.plainui\acme.bar.plainui.csproj", "{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acme.foo.plainui", "sources\acme.foo.plainui\acme.foo.plainui.csproj", "{B224CF51-3B31-45D1-B475-1C33FE45A45F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,20 @@ Global
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
+		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
+		{B224CF51-3B31-45D1-B475-1C33FE45A45F} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 	EndGlobalSection
 EndGlobal
