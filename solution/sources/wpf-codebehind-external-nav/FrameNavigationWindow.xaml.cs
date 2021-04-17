@@ -31,5 +31,11 @@ namespace acme.wpfapp
                 new Uri(
                 @"D:\vcs\github\andez2000\wpf-navigation\external\Pages\ExternalPageSimpleVM.xaml", UriKind.RelativeOrAbsolute));
         }
+
+        private void OtherAssemblyPageNoVM_OnClick(object sender, RoutedEventArgs e)
+        {
+            NavigationFrame.Navigate(new Uri(
+                "pack://application:,,,/external-page-lib;component/Pages/Page1.xaml", UriKind.RelativeOrAbsolute));
+        }
     }
 }

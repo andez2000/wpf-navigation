@@ -10,6 +10,8 @@
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button Click="ExternalUriToPageNoVM_OnClick">External Uri to Page No VM</Button>
             <Button Click="ExternalUriToPageSimpleVM_OnClick">External Uri to Page Simple VM</Button>
+            
+            <Button Click="OtherAssemblyPageNoVM_OnClick">Other Assembly Page No VM</Button>
 
         </StackPanel>
         <Frame x:Name="NavigationFrame">

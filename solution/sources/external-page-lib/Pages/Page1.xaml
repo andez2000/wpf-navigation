@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:acme.external"
       mc:Ignorable="d"
       Title="Page1" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Label>
+        Hello, from Page1.xaml in external-page-lib
+    </Label>
 </Page>
