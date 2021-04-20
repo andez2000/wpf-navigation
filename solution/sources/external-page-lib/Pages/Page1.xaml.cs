@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace acme.external
+namespace acme.external.Pages
 {
     public partial class Page1 : Page
     {
