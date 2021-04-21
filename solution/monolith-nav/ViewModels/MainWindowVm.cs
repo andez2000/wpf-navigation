@@ -18,9 +18,6 @@ namespace acme.monolith.ViewModels
             NavigateTo = new RelayCommand<string>(NavigateToView, (_) => true);
         }
 
-        private void NavigateToView(string view)
-        {
-            _pageNavigationService.NavigateTo(new Uri(view, UriKind.RelativeOrAbsolute));
-        }
+        private void NavigateToView(string view) => _pageNavigationService.NavigateTo(new Uri(view, UriKind.RelativeOrAbsolute));
     }
 }
