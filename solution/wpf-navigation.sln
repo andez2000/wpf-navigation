@@ -8,17 +8,11 @@ ProjectSection(SolutionItems) = preProject
 	..\external\Pages\ExternalPageSimpleVM.xaml = ..\external\Pages\ExternalPageSimpleVM.xaml
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-nav", "sources\wpf-codebehind-nav\wpf-codebehind-nav.csproj", "{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-external-nav", "sources\wpf-codebehind-external-nav\wpf-codebehind-external-nav.csproj", "{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "external-page-lib", "sources\external-page-lib\external-page-lib.csproj", "{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acme.bar.plainui", "sources\acme.bar.plainui\acme.bar.plainui.csproj", "{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acme.foo.plainui", "sources\acme.foo.plainui\acme.foo.plainui.csproj", "{B224CF51-3B31-45D1-B475-1C33FE45A45F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monolith-nav", "monolith-nav\monolith-nav.csproj", "{0ED30FEE-A678-4A7F-B1BB-5E1CACE517C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Codebehind-Navigation", "1-Codebehind-Navigation", "{6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792}"
 EndProject
@@ -26,20 +20,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Services-Monolith", "2-Se
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Navigation-Modular", "3-Navigation-Modular", "{BD647BB0-81E1-4124-9EA6-5D7A84AD08BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-external-nav", "sources\1-codebehind-navigation\codebehind-external-nav\wpf-codebehind-external-nav.csproj", "{45272075-277A-44D4-B1ED-6CB67315BF33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpf-codebehind-nav", "sources\1-codebehind-navigation\codebehind-nav\wpf-codebehind-nav.csproj", "{55BDAA33-A940-4E74-B76B-AFE3A11E4F23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monolith-nav", "sources\2-services-monolith\monolith-nav\monolith-nav.csproj", "{F9B3B225-1D49-4CC4-B545-78BD6C8BB238}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,20 +44,28 @@ Global
 		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B224CF51-3B31-45D1-B475-1C33FE45A45F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ED30FEE-A678-4A7F-B1BB-5E1CACE517C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ED30FEE-A678-4A7F-B1BB-5E1CACE517C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ED30FEE-A678-4A7F-B1BB-5E1CACE517C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ED30FEE-A678-4A7F-B1BB-5E1CACE517C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45272075-277A-44D4-B1ED-6CB67315BF33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45272075-277A-44D4-B1ED-6CB67315BF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45272075-277A-44D4-B1ED-6CB67315BF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45272075-277A-44D4-B1ED-6CB67315BF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55BDAA33-A940-4E74-B76B-AFE3A11E4F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BDAA33-A940-4E74-B76B-AFE3A11E4F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55BDAA33-A940-4E74-B76B-AFE3A11E4F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55BDAA33-A940-4E74-B76B-AFE3A11E4F23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B3B225-1D49-4CC4-B545-78BD6C8BB238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B3B225-1D49-4CC4-B545-78BD6C8BB238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B3B225-1D49-4CC4-B545-78BD6C8BB238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B3B225-1D49-4CC4-B545-78BD6C8BB238}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{32F6F520-4D5E-42E1-AC5E-9B389C5C09A6} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{B224CF51-3B31-45D1-B475-1C33FE45A45F} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
-		{EC00C754-72E3-4BD0-8DBC-1244EEBEDC68} = {6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792}
-		{F3C66B8B-7FA9-48B9-9163-A7E6B72C403E} = {6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792}
 		{B5D93BA7-D882-4E81-9D3B-E9C067129D5B} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
 		{BD647BB0-81E1-4124-9EA6-5D7A84AD08BD} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
-		{0ED30FEE-A678-4A7F-B1BB-5E1CACE517C0} = {B5D93BA7-D882-4E81-9D3B-E9C067129D5B}
+		{45272075-277A-44D4-B1ED-6CB67315BF33} = {6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792}
+		{55BDAA33-A940-4E74-B76B-AFE3A11E4F23} = {6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792}
+		{F9B3B225-1D49-4CC4-B545-78BD6C8BB238} = {B5D93BA7-D882-4E81-9D3B-E9C067129D5B}
 	EndGlobalSection
 EndGlobal
