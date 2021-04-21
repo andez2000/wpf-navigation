@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monolith-nav", "sources\2-s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "external-page-lib", "sources\shared\external-page-lib\external-page-lib.csproj", "{33C62D43-F4C9-4E36-9534-0DA66E12CD30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monolith-route-nav", "sources\2-services-monolith\monolith-route-nav\monolith-route-nav.csproj", "{A53ED5D9-6A67-403B-A262-2B89B3E8D82C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monolith-route-nav-tests", "sources\2-services-monolith\monolith-route-nav-tests\monolith-route-nav-tests.csproj", "{9CA33688-632D-47B8-A744-70D3B6AE08F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,14 @@ Global
 		{33C62D43-F4C9-4E36-9534-0DA66E12CD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33C62D43-F4C9-4E36-9534-0DA66E12CD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33C62D43-F4C9-4E36-9534-0DA66E12CD30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A53ED5D9-6A67-403B-A262-2B89B3E8D82C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A53ED5D9-6A67-403B-A262-2B89B3E8D82C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A53ED5D9-6A67-403B-A262-2B89B3E8D82C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A53ED5D9-6A67-403B-A262-2B89B3E8D82C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA33688-632D-47B8-A744-70D3B6AE08F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA33688-632D-47B8-A744-70D3B6AE08F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CA33688-632D-47B8-A744-70D3B6AE08F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA33688-632D-47B8-A744-70D3B6AE08F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E0D8AB12-0B32-452A-8545-AD43FD2E0CF1} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
@@ -67,5 +79,7 @@ Global
 		{55BDAA33-A940-4E74-B76B-AFE3A11E4F23} = {6E0D6EF2-DE97-4FB1-9E60-C6FB4D478792}
 		{F9B3B225-1D49-4CC4-B545-78BD6C8BB238} = {B5D93BA7-D882-4E81-9D3B-E9C067129D5B}
 		{33C62D43-F4C9-4E36-9534-0DA66E12CD30} = {B3A809CF-ED1C-4540-90E4-95E8B2D34FDE}
+		{A53ED5D9-6A67-403B-A262-2B89B3E8D82C} = {B5D93BA7-D882-4E81-9D3B-E9C067129D5B}
+		{9CA33688-632D-47B8-A744-70D3B6AE08F4} = {B5D93BA7-D882-4E81-9D3B-E9C067129D5B}
 	EndGlobalSection
 EndGlobal
