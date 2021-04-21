@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:acme.monolith"
+        xmlns:vm="clr-namespace:acme.monolith.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowVm, IsDesignTimeCreatable=False}"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
-            <Button>Page 1</Button>
-            <Button>Page 2</Button>
+            <Button Command="{Binding NavigateTo}" CommandParameter="\Pages\Page1.xaml">Page 1</Button>
+            <Button Command="{Binding NavigateTo}" CommandParameter="\Pages\Page2.xaml">Page 2</Button>
         </StackPanel>
         
         <Frame x:Name="NavigationHost" Background="Aqua"/>
