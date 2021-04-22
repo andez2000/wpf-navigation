@@ -17,17 +17,11 @@ namespace wpf_tdd
         {
             ContainerBuilder containerBuilder = new ();
             
-            //containerBuilder.RegisterInstance
-            //containerBuilder.RegisterType
-
             containerBuilder.RegisterType<Page2WithVm>();
             containerBuilder.RegisterType<Page2Vm>();
             
             IContainer container = containerBuilder.Build();
             IServiceProvider serviceProvider = new AutofacServiceProvider(container);
-
-            //Page1 page1 = (Page1) serviceProvider.GetService(typeof(Page1));
-            
 
             ElementDataContextThing thing = new ElementDataContextThing(serviceProvider);
             thing.Register<Page2WithVm, Page2Vm>((view, dataContext) =>
@@ -46,7 +40,6 @@ namespace wpf_tdd
 
     public class ElementDataContextThing
     {
-//        private readonly Dictionary<Type, (Type, Action<object, object>)> _viewTypeResolver = new ();
         private readonly Dictionary<Type, (Type, Delegate)> _viewTypeResolver = new ();
         private readonly IServiceProvider _serviceProvider;
 
@@ -71,7 +64,6 @@ namespace wpf_tdd
             object dataContextInstance =  _serviceProvider.GetService(dataContext);
 
             action.DynamicInvoke(frameworkElement, dataContextInstance);
-            //action.Invoke(frameworkElement, dataContextInstance);
             
             return frameworkElement;
         }
