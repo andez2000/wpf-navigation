@@ -22,6 +22,12 @@ namespace acme.monolith
             
             Assert.NotNull(page1a);
             Assert.NotNull(page1b);
+            
+            // register route to provide a type or an instance?
+            
+            // if type then use a level of indirection around some ioc
+            
+            // pass the view instance to the navigation service to navigate to
         }
     }
 
