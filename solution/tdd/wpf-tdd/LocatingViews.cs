@@ -60,7 +60,7 @@ namespace wpf_tdd
             where TFrameworkElement : FrameworkElement 
             where TDataContext : new()
         {
-            _viewTypeResolver.Add(typeof(TFrameworkElement), (typeof(TDataContext), action as Action<object, object>));
+            _viewTypeResolver.Add(typeof(TFrameworkElement), (typeof(TDataContext), action));
         }
 
         public TFrameworkElement Resolve<TFrameworkElement>()
