@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows;
 using System.Windows.Navigation;
 using acme.external.Pages;
 using acme.external.ViewModels;
@@ -24,75 +25,99 @@ namespace wpftdd
         
         
         
-        private readonly MainWindow _mainWindow = new ();
 
-        [UIFact]
-        public void JustSetFrameContent()
+        // [WpfFact]
+        // public void JustSetFrameContent()
+        // {
+        //     var page1 = new Page1();
+        //     _mainWindow.Show();
+        //     _mainWindow.NavigationHost.Content = page1;
+        //     
+        //     System.Windows.Threading.Dispatcher.Run();
+        //     
+        //     Thread.Sleep(3000);
+        //     
+        //     Assert.NotNull(_mainWindow.NavigationHost.Content);
+        // }
+        
+        [WpfFact]
+        public void JustSetFrameContent2()
         {
-            var page1 = new Page1();
-            _mainWindow.Show();
-            _mainWindow.Activate();
-            _mainWindow.NavigationHost.Content = page1;
-            _mainWindow.NavigationHost.Refresh();
+            MainWindow mainWindow = null;
+
+            var t = new Thread(() =>
+            {
+                mainWindow = new ();
+                var page1 = new Page1();
+                mainWindow.NavigationHost.Content = page1;
+                mainWindow.Closed += (s, e) => mainWindow.Dispatcher.InvokeShutdown();
+
+                mainWindow.Show();
+
+                System.Windows.Threading.Dispatcher.Run();
+
+                string s = "";
+            });
             
-            Thread.Sleep(3000);
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
             
-            Assert.NotNull(_mainWindow.NavigationHost.Content);
+            Assert.NotNull(mainWindow.NavigationHost.Content);
+
+            mainWindow.Close();
         }
         
-        [UIFact]
-        public void TddIt()
-        {
-            // configuration
-            Routes routes = new Routes();
-            routes.AddAll(_page1Route, _page2Route, _page3Route);
+        // [UIFact]
+        // public void TddIt()
+        // {
+        //     // configuration
+        //     Routes routes = new Routes();
+        //     routes.AddAll(_page1Route, _page2Route, _page3Route);
+        //
+        //     Views views = new Views();
+        //     views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
+        //     views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
+        //     // what to do with page1
+        //
+        //     // resolution
+        //     IServiceProvider serviceProvider = null;
+        //     
+        //     NamedRouteResolver namedRouteResolver = new(routes);
+        //     RouteResolver routeResolver = new(namedRouteResolver);
+        //     ViewResolver viewResolver = new ViewResolver(views, type => serviceProvider.GetService(type));
+        //     NavigationController navigationController = new(() => _mainWindow.NavigationHost.NavigationService);
+        //     RouteNavigationService routeNavigationService = new(routeResolver, viewResolver, navigationController);
+        //
+        //     // add all routes to the container...  what is the scope for each view :?
+        //     // wire up for DI
+        //     ServiceCollection serviceCollection = new();
+        //     serviceCollection.AddScoped<Page1>();
+        //     serviceCollection.AddScoped<Page2WithVm>();
+        //     serviceCollection.AddScoped<Page2Vm>();
+        //     serviceCollection.AddScoped<Page3WithVm>();
+        //     serviceCollection.AddScoped<Page3Vm>();
+        //
+        //     ContainerBuilder containerBuilder = new();
+        //     containerBuilder.Populate(serviceCollection);
+        //     IContainer container = containerBuilder.Build();
+        //     serviceProvider = new AutofacServiceProvider(container);
+        //     using (serviceProvider.CreateScope())
+        //     {
+        //         _mainWindow.Show();
+        //         //_mainWindow.NavigationHost.NavigationService.NavigationProgress += NavigationServiceOnNavigationProgress;
+        //         
+        //         routeNavigationService.NavigateTo(Named("Page2"));
+        //         
+        //         _mainWindow.NavigationHost.Content = serviceProvider.GetService<Page2Vm>();
+        //         
+        //         Assert.NotNull(_mainWindow.NavigationHost.Content); //, serviceProvider.GetService<Page2Vm>());
+        //         
+        //         // routeNavigationService.NavigateTo(Named("Page3"));
+        //         // Thread.Sleep(2000);
+        //         // Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
+        //     }
+        // }
 
-            Views views = new Views();
-            views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
-            views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
-            // what to do with page1
-
-            // resolution
-            IServiceProvider serviceProvider = null;
-            
-            NamedRouteResolver namedRouteResolver = new(routes);
-            RouteResolver routeResolver = new(namedRouteResolver);
-            ViewResolver viewResolver = new ViewResolver(views, type => serviceProvider.GetService(type));
-            NavigationController navigationController = new(() => _mainWindow.NavigationHost.NavigationService);
-            RouteNavigationService routeNavigationService = new(routeResolver, viewResolver, navigationController);
-
-            // add all routes to the container...  what is the scope for each view :?
-            // wire up for DI
-            ServiceCollection serviceCollection = new();
-            serviceCollection.AddScoped<Page1>();
-            serviceCollection.AddScoped<Page2WithVm>();
-            serviceCollection.AddScoped<Page2Vm>();
-            serviceCollection.AddScoped<Page3WithVm>();
-            serviceCollection.AddScoped<Page3Vm>();
-
-            ContainerBuilder containerBuilder = new();
-            containerBuilder.Populate(serviceCollection);
-            IContainer container = containerBuilder.Build();
-            serviceProvider = new AutofacServiceProvider(container);
-            using (serviceProvider.CreateScope())
-            {
-                _mainWindow.Show();
-                //_mainWindow.NavigationHost.NavigationService.NavigationProgress += NavigationServiceOnNavigationProgress;
-                
-                routeNavigationService.NavigateTo(Named("Page2"));
-                
-                _mainWindow.NavigationHost.Content = serviceProvider.GetService<Page2Vm>();
-                
-                Assert.NotNull(_mainWindow.NavigationHost.Content); //, serviceProvider.GetService<Page2Vm>());
-                
-                // routeNavigationService.NavigateTo(Named("Page3"));
-                // Thread.Sleep(2000);
-                // Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
-            }
-        }
-
-        private void NavigationServiceOnNavigationProgress(object sender, NavigationProgressEventArgs e)
-        {
-        }
     }
 }
