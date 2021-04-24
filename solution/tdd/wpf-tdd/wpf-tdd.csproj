@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <RootNamespace>wpf_tdd</RootNamespace>
+        <RootNamespace>wpftdd</RootNamespace>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>

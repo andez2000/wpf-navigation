@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace acme.external
+namespace acme.external.ViewModels
 {
-    public class Page2Vm : INotifyPropertyChanged
+    public class Page3Vm : INotifyPropertyChanged
     {
         private string _message;
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,16 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Windows;
 using acme.external;
 using acme.external.Pages;
+using acme.external.ViewModels;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using wpftdd;
 using Xunit;
 
 namespace wpf_tdd
 {
-    public class UnitTest1
+    public class LocatingViews
     {
         [UIFact]
         public void Can_create_page_and_set_data_context()
@@ -33,39 +33,9 @@ namespace wpf_tdd
 
 
             Assert.NotNull(page2WithVm);
+            Assert.NotNull(page2WithVm.DataContext);
         }
         
         
-    }
-
-    public class ElementDataContextThing
-    {
-        private readonly Dictionary<Type, (Type, Delegate)> _viewTypeResolver = new ();
-        private readonly IServiceProvider _serviceProvider;
-
-        public ElementDataContextThing(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        }
-
-
-        public void Register<TFrameworkElement, TDataContext>(Action<TFrameworkElement, TDataContext> action) 
-            where TFrameworkElement : FrameworkElement 
-            where TDataContext : new()
-        {
-            _viewTypeResolver.Add(typeof(TFrameworkElement), (typeof(TDataContext), action));
-        }
-
-        public TFrameworkElement Resolve<TFrameworkElement>()
-        {
-            var (dataContext, action) = _viewTypeResolver[typeof(TFrameworkElement)];
-
-            TFrameworkElement frameworkElement = (TFrameworkElement) _serviceProvider.GetService(typeof(TFrameworkElement));
-            object dataContextInstance =  _serviceProvider.GetService(dataContext);
-
-            action.DynamicInvoke(frameworkElement, dataContextInstance);
-            
-            return frameworkElement;
-        }
     }
 }
