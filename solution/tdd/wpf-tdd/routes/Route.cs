@@ -1,6 +1,7 @@
 ﻿namespace wpftdd.routes
 {
-    public class UriRoute : Route
+    public abstract class Route
     {
+        
     }
 }

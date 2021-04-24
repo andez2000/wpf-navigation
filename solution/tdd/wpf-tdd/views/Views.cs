@@ -15,7 +15,7 @@ namespace wpftdd.views
             RegisterWithAction<TFrameworkElement, TDataContext>(action);
         }
 
-        public void Register<TFrameworkElement, TDataContext>() 
+        public void RegisterForAutoDataContext<TFrameworkElement, TDataContext>() 
             where TFrameworkElement : FrameworkElement 
             where TDataContext : new()
         {
@@ -28,5 +28,10 @@ namespace wpftdd.views
         }
 
         internal IEnumerable<Type> AllViews() => _viewTypeResolver.Keys;
+
+        public (Type dataContextType, Delegate action) ResolverFor(Type viewType)
+        {
+            return _viewTypeResolver[viewType];
+        }
     }
 }

@@ -4,9 +4,9 @@ using wpftdd.views;
 
 namespace wpftdd.routes
 {
-    public class ContainerRegistration
+    public static class ContainerRegistration
     {
-        public void RegisterAll(Views views, IServiceCollection serviceCollection)
+        public static void RegisterAll(Views views, IServiceCollection serviceCollection)
         {
             foreach (var view in views.AllViews())
             {
