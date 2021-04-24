@@ -26,5 +26,7 @@ namespace wpftdd.views
         {
             _viewTypeResolver.Add(typeof(TFrameworkElement), (typeof(TDataContext), action));
         }
+
+        internal IEnumerable<Type> AllViews() => _viewTypeResolver.Keys;
     }
 }
