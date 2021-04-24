@@ -14,14 +14,31 @@ using static wpftdd.routes.Name;
 namespace wpftdd
 {
     // https://autofaccn.readthedocs.io/en/latest/integration/netcore.html
-
+    // https://stackoverflow.com/questions/13381967/show-wpf-window-from-test-unit
     public class SetupModuleTdd
     {
         // this is wrong
         private readonly NamedRoute _page1Route = new("Page1", typeof(Page1));
         private readonly NamedRoute _page2Route = new("Page2", typeof(Page2WithVm));
         private readonly NamedRoute _page3Route = new("Page3", typeof(Page3WithVm));
+        
+        
+        
         private readonly MainWindow _mainWindow = new ();
+
+        [UIFact]
+        public void JustSetFrameContent()
+        {
+            var page1 = new Page1();
+            _mainWindow.Show();
+            _mainWindow.Activate();
+            _mainWindow.NavigationHost.Content = page1;
+            _mainWindow.NavigationHost.Refresh();
+            
+            Thread.Sleep(3000);
+            
+            Assert.NotNull(_mainWindow.NavigationHost.Content);
+        }
         
         [UIFact]
         public void TddIt()
@@ -59,14 +76,18 @@ namespace wpftdd
             serviceProvider = new AutofacServiceProvider(container);
             using (serviceProvider.CreateScope())
             {
-                _mainWindow.NavigationHost.NavigationService.NavigationProgress += NavigationServiceOnNavigationProgress;
-                routeNavigationService.NavigateTo(Named("Page2"));
-                Thread.Sleep(20000);
-                Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
+                _mainWindow.Show();
+                //_mainWindow.NavigationHost.NavigationService.NavigationProgress += NavigationServiceOnNavigationProgress;
                 
-                routeNavigationService.NavigateTo(Named("Page3"));
-                Thread.Sleep(2000);
-                Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
+                routeNavigationService.NavigateTo(Named("Page2"));
+                
+                _mainWindow.NavigationHost.Content = serviceProvider.GetService<Page2Vm>();
+                
+                Assert.NotNull(_mainWindow.NavigationHost.Content); //, serviceProvider.GetService<Page2Vm>());
+                
+                // routeNavigationService.NavigateTo(Named("Page3"));
+                // Thread.Sleep(2000);
+                // Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
             }
         }
 
