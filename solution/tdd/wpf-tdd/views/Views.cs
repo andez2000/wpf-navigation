@@ -12,7 +12,7 @@ namespace wpftdd.views
             where TFrameworkElement : FrameworkElement 
             where TDataContext : new()
         {
-            RegisterWithAction<TFrameworkElement, TDataContext>(action);
+            RegisterWithAction(action);
         }
 
         public void RegisterForAutoDataContext<TFrameworkElement, TDataContext>() 

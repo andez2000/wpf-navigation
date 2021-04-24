@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Windows.Navigation;
 using acme.external.Pages;
 using acme.external.ViewModels;
 using Autofac;
@@ -16,17 +18,17 @@ namespace wpftdd
     public class SetupModuleTdd
     {
         // this is wrong
-        private readonly NamedRoute page1Route = new NamedRoute("Page1", typeof(Page1));
-        private readonly NamedRoute page2Route = new NamedRoute("Page2", typeof(Page2WithVm));
-        private readonly NamedRoute page3Route = new NamedRoute("Page3", typeof(Page3WithVm));
-        private IServiceProvider serviceProvider;
+        private readonly NamedRoute _page1Route = new("Page1", typeof(Page1));
+        private readonly NamedRoute _page2Route = new("Page2", typeof(Page2WithVm));
+        private readonly NamedRoute _page3Route = new("Page3", typeof(Page3WithVm));
+        private readonly MainWindow _mainWindow = new ();
         
         [UIFact]
         public void TddIt()
         {
             // configuration
             Routes routes = new Routes();
-            routes.AddAll(page1Route, page2Route, page3Route);
+            routes.AddAll(_page1Route, _page2Route, _page3Route);
 
             Views views = new Views();
             views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
@@ -34,26 +36,42 @@ namespace wpftdd
             // what to do with page1
 
             // resolution
+            IServiceProvider serviceProvider = null;
+            
             NamedRouteResolver namedRouteResolver = new(routes);
             RouteResolver routeResolver = new(namedRouteResolver);
             ViewResolver viewResolver = new ViewResolver(views, type => serviceProvider.GetService(type));
-            RouteNavigationService routeNavigationService = new(routeResolver, viewResolver);
+            NavigationController navigationController = new(() => _mainWindow.NavigationHost.NavigationService);
+            RouteNavigationService routeNavigationService = new(routeResolver, viewResolver, navigationController);
 
             // add all routes to the container...  what is the scope for each view :?
             // wire up for DI
             ServiceCollection serviceCollection = new();
-            serviceCollection.AddTransient<Page1>();
-            serviceCollection.AddTransient<Page2WithVm>();
-            serviceCollection.AddTransient<Page2Vm>();
-            serviceCollection.AddTransient<Page3WithVm>();
-            serviceCollection.AddTransient<Page3Vm>();
+            serviceCollection.AddScoped<Page1>();
+            serviceCollection.AddScoped<Page2WithVm>();
+            serviceCollection.AddScoped<Page2Vm>();
+            serviceCollection.AddScoped<Page3WithVm>();
+            serviceCollection.AddScoped<Page3Vm>();
 
             ContainerBuilder containerBuilder = new();
             containerBuilder.Populate(serviceCollection);
             IContainer container = containerBuilder.Build();
             serviceProvider = new AutofacServiceProvider(container);
+            using (serviceProvider.CreateScope())
+            {
+                _mainWindow.NavigationHost.NavigationService.NavigationProgress += NavigationServiceOnNavigationProgress;
+                routeNavigationService.NavigateTo(Named("Page2"));
+                Thread.Sleep(20000);
+                Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
+                
+                routeNavigationService.NavigateTo(Named("Page3"));
+                Thread.Sleep(2000);
+                Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
+            }
+        }
 
-            routeNavigationService.NavigateTo(Named("Page2"));
+        private void NavigationServiceOnNavigationProgress(object sender, NavigationProgressEventArgs e)
+        {
         }
     }
 }
