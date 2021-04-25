@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using acme.external.Pages;
 using acme.external.ViewModels;
 using Autofac;
@@ -44,6 +45,9 @@ namespace wpftdd
         public void JustSetFrameContent2()
         {
             MainWindow mainWindow = null;
+            var showMonitor = new ManualResetEventSlim(false);
+            var assertionsMonitor = new ManualResetEventSlim(false);
+            var windowClosedMonitor = new ManualResetEventSlim(false);
 
             var t = new Thread(() =>
             {
@@ -53,19 +57,33 @@ namespace wpftdd
                 mainWindow.Closed += (s, e) => mainWindow.Dispatcher.InvokeShutdown();
 
                 mainWindow.Show();
+                showMonitor.Set();
 
                 System.Windows.Threading.Dispatcher.Run();
-
-                string s = "";
             });
             
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
-            t.Join();
-            
-            Assert.NotNull(mainWindow.NavigationHost.Content);
+            showMonitor.Wait();
 
-            mainWindow.Close();
+            mainWindow.Dispatcher.BeginInvoke(() =>
+            {
+                Assert.NotNull(mainWindow.NavigationHost.Content);
+                assertionsMonitor.Set();
+                
+            }, DispatcherPriority.Normal);
+
+            assertionsMonitor.Wait(TimeSpan.FromSeconds(1));
+            
+            mainWindow.Dispatcher.BeginInvoke(() =>
+            {
+                mainWindow.Close();
+                windowClosedMonitor.Set();
+                
+            }, DispatcherPriority.Normal);
+
+
+            windowClosedMonitor.Wait(TimeSpan.FromSeconds(1));
         }
         
         // [UIFact]
