@@ -37,7 +37,7 @@ namespace wpftdd
             {
                 var page1 = new Page1();
                 mainWindow.NavigationHost.Content = page1;
-            }, runTestMonitor, TimeSpan.FromMinutes(1));
+            }, runTestMonitor, TimeSpan.FromSeconds(1));
             
             DispatchOn(mainWindow, () =>
             {
@@ -51,56 +51,73 @@ namespace wpftdd
             }, windowClosedMonitor, TimeSpan.FromSeconds(1));
         }
 
-        // [UIFact]
-        // public void TddIt()
-        // {
-        //     // configuration
-        //     Routes routes = new Routes();
-        //     routes.AddAll(_page1Route, _page2Route, _page3Route);
-        //
-        //     Views views = new Views();
-        //     views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
-        //     views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
-        //     // what to do with page1
-        //
-        //     // resolution
-        //     IServiceProvider serviceProvider = null;
-        //     
-        //     NamedRouteResolver namedRouteResolver = new(routes);
-        //     RouteResolver routeResolver = new(namedRouteResolver);
-        //     ViewResolver viewResolver = new ViewResolver(views, type => serviceProvider.GetService(type));
-        //     NavigationController navigationController = new(() => _mainWindow.NavigationHost.NavigationService);
-        //     RouteNavigationService routeNavigationService = new(routeResolver, viewResolver, navigationController);
-        //
-        //     // add all routes to the container...  what is the scope for each view :?
-        //     // wire up for DI
-        //     ServiceCollection serviceCollection = new();
-        //     serviceCollection.AddScoped<Page1>();
-        //     serviceCollection.AddScoped<Page2WithVm>();
-        //     serviceCollection.AddScoped<Page2Vm>();
-        //     serviceCollection.AddScoped<Page3WithVm>();
-        //     serviceCollection.AddScoped<Page3Vm>();
-        //
-        //     ContainerBuilder containerBuilder = new();
-        //     containerBuilder.Populate(serviceCollection);
-        //     IContainer container = containerBuilder.Build();
-        //     serviceProvider = new AutofacServiceProvider(container);
-        //     using (serviceProvider.CreateScope())
-        //     {
-        //         _mainWindow.Show();
-        //         //_mainWindow.NavigationHost.NavigationService.NavigationProgress += NavigationServiceOnNavigationProgress;
-        //         
-        //         routeNavigationService.NavigateTo(Named("Page2"));
-        //         
-        //         _mainWindow.NavigationHost.Content = serviceProvider.GetService<Page2Vm>();
-        //         
-        //         Assert.NotNull(_mainWindow.NavigationHost.Content); //, serviceProvider.GetService<Page2Vm>());
-        //         
-        //         // routeNavigationService.NavigateTo(Named("Page3"));
-        //         // Thread.Sleep(2000);
-        //         // Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
-        //     }
-        // }
+        [UIFact]
+        public void TddIt()
+        {
+            (Thread Thread, MainWindow mainWindow) context = new (null, null);
+            
+            // configuration
+            Routes routes = new Routes();
+            routes.AddAll(_page1Route, _page2Route, _page3Route);
+        
+            Views views = new Views();
+            views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
+            views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
+            // what to do with page1
+        
+            // resolution
+            IServiceProvider serviceProvider = null;
+            
+            NamedRouteResolver namedRouteResolver = new(routes);
+            RouteResolver routeResolver = new(namedRouteResolver);
+            ViewResolver viewResolver = new ViewResolver(views, type => serviceProvider.GetService(type));
+            NavigationController navigationController = new(() => context.mainWindow.NavigationHost.NavigationService);
+            RouteNavigationService routeNavigationService = new(routeResolver, viewResolver, navigationController);
+        
+            // add all routes to the container...  what is the scope for each view :?
+            // wire up for DI
+            ServiceCollection serviceCollection = new();
+            serviceCollection.AddScoped<Page1>();
+            serviceCollection.AddScoped<Page2WithVm>();
+            serviceCollection.AddScoped<Page2Vm>();
+            serviceCollection.AddScoped<Page3WithVm>();
+            serviceCollection.AddScoped<Page3Vm>();
+        
+            ContainerBuilder containerBuilder = new();
+            containerBuilder.Populate(serviceCollection);
+            IContainer container = containerBuilder.Build();
+            serviceProvider = new AutofacServiceProvider(container);
+            using (serviceProvider.CreateScope())
+            {
+                var runTestMonitor = new ManualResetEventSlim(false);
+                var assertionsMonitor = new ManualResetEventSlim(false);
+                
+                context = CreateWindowOnSTAThread(() => new MainWindow(), w => { });
+
+                DispatchOn(context.mainWindow, () =>
+                {
+                    routeNavigationService.NavigateTo(Named("Page2"));
+                }, runTestMonitor, TimeSpan.FromSeconds(1));
+                
+                DispatchOn(context.mainWindow, () =>
+                {
+                    Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
+                }, assertionsMonitor, TimeSpan.FromSeconds(1));
+                
+                // runTestMonitor.Reset();
+                // assertionsMonitor.Reset();
+                //
+                // DispatchOn(context.mainWindow, () =>
+                // {
+                //     routeNavigationService.NavigateTo(Named("Page3"));
+                // }, runTestMonitor, TimeSpan.FromSeconds(1));
+                //
+                // DispatchOn(context.mainWindow, () =>
+                // {
+                //     Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
+                // }, assertionsMonitor, TimeSpan.FromSeconds(1));
+            }
+        }
         
         private (Thread thread, TWindow window) CreateWindowOnSTAThread<TWindow>(Func<TWindow> createWindow, Action<TWindow> postAction) 
             where TWindow : Window
@@ -122,7 +139,7 @@ namespace wpftdd
             
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
-            waitUntilShow.Wait(TimeSpan.FromSeconds(1));
+            waitUntilShow.Wait(TimeSpan.FromSeconds(2));
 
             return (t, window);
         }
@@ -138,7 +155,5 @@ namespace wpftdd
 
             manualResetEvent.Wait(timeout);
         }
-
-
     }
 }
