@@ -40,50 +40,83 @@ namespace wpftdd
         //     
         //     Assert.NotNull(_mainWindow.NavigationHost.Content);
         // }
-        
-        [WpfFact]
-        public void JustSetFrameContent2()
-        {
-            MainWindow mainWindow = null;
-            var showMonitor = new ManualResetEventSlim(false);
-            var assertionsMonitor = new ManualResetEventSlim(false);
-            var windowClosedMonitor = new ManualResetEventSlim(false);
 
+        private (Thread thread, TWindow window) CreateWindowOnSTAThread<TWindow>(Func<TWindow> createWindow, Action<TWindow> postAction) 
+            where TWindow : Window
+        {
+            TWindow window = null;
+            var waitUntilShow = new ManualResetEventSlim(false);
+            
             var t = new Thread(() =>
             {
-                mainWindow = new ();
-                var page1 = new Page1();
-                mainWindow.NavigationHost.Content = page1;
-                mainWindow.Closed += (s, e) => mainWindow.Dispatcher.InvokeShutdown();
+                window = createWindow();
+                window.Closed += (s, e) => window.Dispatcher.InvokeShutdown();
 
-                mainWindow.Show();
-                showMonitor.Set();
+                postAction(window);
 
+                waitUntilShow.Set();
+                
                 System.Windows.Threading.Dispatcher.Run();
             });
             
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
-            showMonitor.Wait();
+            waitUntilShow.Wait(TimeSpan.FromSeconds(1));
 
-            mainWindow.Dispatcher.BeginInvoke(() =>
+            return (t, window);
+        }
+        
+        [WpfFact]
+        public void JustSetFrameContent2()
+        {
+            var showMonitor = new ManualResetEventSlim(false);
+            var runTestMonitor = new ManualResetEventSlim(false);
+            var assertionsMonitor = new ManualResetEventSlim(false);
+            var windowClosedMonitor = new ManualResetEventSlim(false);
+
+            (Thread thread, MainWindow mainWindow) context = CreateWindowOnSTAThread(() => new MainWindow(), _ => { });
+
+//            showMonitor.Wait(TimeSpan.FromSeconds(1));
+
+            context.mainWindow.Dispatcher.BeginInvoke(() =>
             {
-                Assert.NotNull(mainWindow.NavigationHost.Content);
+                var page1 = new Page1();
+                context.mainWindow.NavigationHost.Content = page1;
+                runTestMonitor.Set();
+                
+            }, DispatcherPriority.Normal);
+
+            runTestMonitor.Wait(TimeSpan.FromMinutes(1));
+
+            context.mainWindow.Dispatcher.BeginInvoke(() =>
+            {
+                Assert.NotNull(context.mainWindow.NavigationHost.Content);
                 assertionsMonitor.Set();
                 
             }, DispatcherPriority.Normal);
 
             assertionsMonitor.Wait(TimeSpan.FromSeconds(1));
-            
-            mainWindow.Dispatcher.BeginInvoke(() =>
+
+            DispatchOn(context.mainWindow, () =>
             {
-                mainWindow.Close();
+                context.mainWindow.Close();
+                windowClosedMonitor.Set();
+            });
+            
+            context.mainWindow.Dispatcher.BeginInvoke(() =>
+            {
+                context.mainWindow.Close();
                 windowClosedMonitor.Set();
                 
             }, DispatcherPriority.Normal);
 
 
             windowClosedMonitor.Wait(TimeSpan.FromSeconds(1));
+        }
+
+        private void DispatchOn(Window window, Action action)
+        {
+            window.Dispatcher.BeginInvoke(action, DispatcherPriority.Normal);
         }
         
         // [UIFact]
