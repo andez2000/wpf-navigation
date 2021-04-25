@@ -24,101 +24,33 @@ namespace wpftdd
         private readonly NamedRoute _page2Route = new("Page2", typeof(Page2WithVm));
         private readonly NamedRoute _page3Route = new("Page3", typeof(Page3WithVm));
         
-        
-        
-
-        // [WpfFact]
-        // public void JustSetFrameContent()
-        // {
-        //     var page1 = new Page1();
-        //     _mainWindow.Show();
-        //     _mainWindow.NavigationHost.Content = page1;
-        //     
-        //     System.Windows.Threading.Dispatcher.Run();
-        //     
-        //     Thread.Sleep(3000);
-        //     
-        //     Assert.NotNull(_mainWindow.NavigationHost.Content);
-        // }
-
-        private (Thread thread, TWindow window) CreateWindowOnSTAThread<TWindow>(Func<TWindow> createWindow, Action<TWindow> postAction) 
-            where TWindow : Window
-        {
-            TWindow window = null;
-            var waitUntilShow = new ManualResetEventSlim(false);
-            
-            var t = new Thread(() =>
-            {
-                window = createWindow();
-                window.Closed += (s, e) => window.Dispatcher.InvokeShutdown();
-
-                postAction(window);
-
-                waitUntilShow.Set();
-                
-                System.Windows.Threading.Dispatcher.Run();
-            });
-            
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            waitUntilShow.Wait(TimeSpan.FromSeconds(1));
-
-            return (t, window);
-        }
-        
         [WpfFact]
         public void JustSetFrameContent2()
         {
-            var showMonitor = new ManualResetEventSlim(false);
             var runTestMonitor = new ManualResetEventSlim(false);
             var assertionsMonitor = new ManualResetEventSlim(false);
             var windowClosedMonitor = new ManualResetEventSlim(false);
 
-            (Thread thread, MainWindow mainWindow) context = CreateWindowOnSTAThread(() => new MainWindow(), _ => { });
+            var (thread, mainWindow) = CreateWindowOnSTAThread(() => new MainWindow(), w => { });
 
-//            showMonitor.Wait(TimeSpan.FromSeconds(1));
-
-            context.mainWindow.Dispatcher.BeginInvoke(() =>
+            DispatchOn(mainWindow, () =>
             {
                 var page1 = new Page1();
-                context.mainWindow.NavigationHost.Content = page1;
-                runTestMonitor.Set();
-                
-            }, DispatcherPriority.Normal);
-
-            runTestMonitor.Wait(TimeSpan.FromMinutes(1));
-
-            context.mainWindow.Dispatcher.BeginInvoke(() =>
-            {
-                Assert.NotNull(context.mainWindow.NavigationHost.Content);
-                assertionsMonitor.Set();
-                
-            }, DispatcherPriority.Normal);
-
-            assertionsMonitor.Wait(TimeSpan.FromSeconds(1));
-
-            DispatchOn(context.mainWindow, () =>
-            {
-                context.mainWindow.Close();
-                windowClosedMonitor.Set();
-            });
+                mainWindow.NavigationHost.Content = page1;
+            }, runTestMonitor, TimeSpan.FromMinutes(1));
             
-            context.mainWindow.Dispatcher.BeginInvoke(() =>
+            DispatchOn(mainWindow, () =>
             {
-                context.mainWindow.Close();
-                windowClosedMonitor.Set();
-                
-            }, DispatcherPriority.Normal);
+                Assert.NotNull(mainWindow.NavigationHost.Content);
+            }, assertionsMonitor, TimeSpan.FromSeconds(1));
 
+            DispatchOn(mainWindow, () =>
+            {
+                mainWindow.Close();
 
-            windowClosedMonitor.Wait(TimeSpan.FromSeconds(1));
+            }, windowClosedMonitor, TimeSpan.FromSeconds(1));
         }
 
-        private void DispatchOn(Window window, Action action)
-        {
-            window.Dispatcher.BeginInvoke(action, DispatcherPriority.Normal);
-        }
-        
         // [UIFact]
         // public void TddIt()
         // {
@@ -169,6 +101,44 @@ namespace wpftdd
         //         // Assert.Equal(_mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
         //     }
         // }
+        
+        private (Thread thread, TWindow window) CreateWindowOnSTAThread<TWindow>(Func<TWindow> createWindow, Action<TWindow> postAction) 
+            where TWindow : Window
+        {
+            TWindow window = null;
+            var waitUntilShow = new ManualResetEventSlim(false);
+            
+            var t = new Thread(() =>
+            {
+                window = createWindow();
+                window.Closed += (s, e) => window.Dispatcher.InvokeShutdown();
+
+                postAction(window);
+
+                waitUntilShow.Set();
+                
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            waitUntilShow.Wait(TimeSpan.FromSeconds(1));
+
+            return (t, window);
+        }
+        
+        private void DispatchOn(Window window, Action action, ManualResetEventSlim manualResetEvent, TimeSpan timeout)
+        {
+            window.Dispatcher.BeginInvoke(() =>
+            {
+                action();
+                manualResetEvent.Set();
+                
+            }, DispatcherPriority.Normal);
+
+            manualResetEvent.Wait(timeout);
+        }
+
 
     }
 }
