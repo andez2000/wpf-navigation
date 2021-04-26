@@ -29,7 +29,6 @@ namespace wpftdd
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             waitUntilShow.Wait(TimeSpan.FromSeconds(2));
-            Thread.Sleep(100);
 
             return (t, window);
         }

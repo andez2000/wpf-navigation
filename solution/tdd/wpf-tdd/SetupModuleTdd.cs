@@ -68,20 +68,16 @@ namespace wpftdd
                     _context.mainWindow, () => _routeNavigationService.NavigateTo(Named("Page2")),
                     runTestMonitor, TimeSpan.FromSeconds(3));
 
-                Thread.Sleep(1000);
-
                 Assert.Equal(
                     WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Content),
                     _serviceProvider.GetService<Page2WithVm>()
                 );
 
-                // we need sleeps between navigation to give ui chance to update :)...
-                Thread.Sleep(1000);
+                runTestMonitor.Reset();
+                
                 WindowDispatch.DispatchOn(
                     _context.mainWindow, () => { _routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
                     TimeSpan.FromSeconds(1));
-
-                Thread.Sleep(1000);
 
                 Assert.Equal(
                     WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Content),
