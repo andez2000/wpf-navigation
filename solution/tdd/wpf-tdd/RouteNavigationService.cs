@@ -28,5 +28,10 @@ namespace acme.wpftdd
 
             _navigationController.NavigateTo(frameworkElement);
         }
+        
+        public void NavigateTo(Uri uri)
+        {
+            _navigationController.NavigateTo(uri);
+        }
     }
 }

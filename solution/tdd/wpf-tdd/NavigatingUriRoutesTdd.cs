@@ -15,26 +15,22 @@ namespace acme.wpftdd
 {
     // https://autofaccn.readthedocs.io/en/latest/integration/netcore.html
     // https://stackoverflow.com/questions/13381967/show-wpf-window-from-test-unit
-    public sealed class NavigatingNamedRoutesTdd
+    public sealed class NavigatingUriRoutesTdd
     {
-        private readonly NamedRoute _page1Route = new("Page1", typeof(Page1));
-        private readonly NamedRoute _page2Route = new("Page2", typeof(Page2WithVm));
-        private readonly NamedRoute _page3Route = new("Page3", typeof(Page3WithVm));
+        //private readonly UriRoute _page1Route = new(new Uri("/Pages/Page1.xaml", UriKind.Absolute));
 
         private readonly RouteNavigationService _routeNavigationService;
         private readonly IServiceProvider _serviceProvider;
         private (Thread Thread, MainWindow mainWindow) _context;
 
-        public NavigatingNamedRoutesTdd()
+        public NavigatingUriRoutesTdd()
         {
             _context = new(null, null);
 
             var routes = new Routes();
-            routes.AddAll(_page1Route, _page2Route, _page3Route);
+            //routes.AddAll(_page1Route);
 
             var views = new Views();
-            views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
-            views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
 
             NamedRouteResolver namedRouteResolver = new(routes);
             RouteResolver routeResolver = new(namedRouteResolver);
@@ -56,7 +52,7 @@ namespace acme.wpftdd
         }
 
         [UIFact]
-        public void Can_navigate_to_multiple_named_pages()
+        public void Can_navigate_to_uri_page()
         {
             using (_serviceProvider.CreateScope())
             {
@@ -65,23 +61,12 @@ namespace acme.wpftdd
                 _context = WindowDispatch.CreateWindowOnSTAThread(() => new MainWindow(), w => { });
 
                 WindowDispatch.DispatchOn(
-                    _context.mainWindow, () => _routeNavigationService.NavigateTo(Named("Page2")),
+                    _context.mainWindow, () => _routeNavigationService.NavigateTo(new Uri("/WpfApp/Pages/Page1.xaml", UriKind.RelativeOrAbsolute)),
                     runTestMonitor, TimeSpan.FromSeconds(3));
 
                 Assert.Equal(
-                    WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Content),
-                    _serviceProvider.GetService<Page2WithVm>()
-                );
-
-                runTestMonitor.Reset();
-
-                WindowDispatch.DispatchOn(
-                    _context.mainWindow, () => { _routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
-                    TimeSpan.FromSeconds(1));
-
-                Assert.Equal(
-                    WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Content),
-                    _serviceProvider.GetService<Page3WithVm>()
+                    WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Source),
+                    new Uri("/WpfApp/Pages/Page1.xaml", UriKind.RelativeOrAbsolute)
                 );
 
                 WindowDispatch.DispatchOnWithWait(
