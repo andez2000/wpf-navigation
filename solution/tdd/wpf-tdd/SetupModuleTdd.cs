@@ -92,37 +92,28 @@ namespace wpftdd
                 
                 Thread.Sleep(1000);
                 
-                // failing here...
-                var property = GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content);
-
                 Assert.Equal(
-                    property,
+                    GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content),
                     serviceProvider.GetService<Page2WithVm>()
                 );
 
-                // DispatchOn(
-                //     context.mainWindow, 
-                //     () =>
-                //     {
-                //         Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
-                //     },
-                //     assertionsMonitor, TimeSpan.FromSeconds(3));
-//                Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
+                // we need sleeps between navigation to give ui chance to update :)...
+                Thread.Sleep(1000);
+                DispatchOn(context.mainWindow, () =>
+                {
+                    routeNavigationService.NavigateTo(Named("Page3"));
+                }, runTestMonitor, TimeSpan.FromSeconds(1));
+                
+                Thread.Sleep(1000);
+
+
+                var property = GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content);
+                Assert.Equal(
+                    property,
+                    serviceProvider.GetService<Page3WithVm>()
+                );
 
                 context.mainWindow?.Dispatcher.BeginInvoke(new ThreadStart(() => context.mainWindow.Close()));
-                
-                // runTestMonitor.Reset();
-                // assertionsMonitor.Reset();
-                //
-                // DispatchOn(context.mainWindow, () =>
-                // {
-                //     routeNavigationService.NavigateTo(Named("Page3"));
-                // }, runTestMonitor, TimeSpan.FromSeconds(1));
-                //
-                // DispatchOn(context.mainWindow, () =>
-                // {
-                //     Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page3Vm>());
-                // }, assertionsMonitor, TimeSpan.FromSeconds(1));
             }
         }
         
