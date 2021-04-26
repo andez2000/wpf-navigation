@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Windows;
-using System.Windows.Navigation;
-using System.Windows.Threading;
 using acme.external.Pages;
 using acme.external.ViewModels;
 using Autofac;
@@ -17,7 +14,7 @@ namespace wpftdd
 {
     // https://autofaccn.readthedocs.io/en/latest/integration/netcore.html
     // https://stackoverflow.com/questions/13381967/show-wpf-window-from-test-unit
-    public class SetupModuleTdd
+    public sealed class SetupModuleTdd
     {
         // this is wrong
         private readonly NamedRoute _page1Route = new("Page1", typeof(Page1));
@@ -31,16 +28,16 @@ namespace wpftdd
             var assertionsMonitor = new ManualResetEventSlim(false);
             var windowClosedMonitor = new ManualResetEventSlim(false);
 
-            var (thread, mainWindow) = CreateWindowOnSTAThread(() => new MainWindow(), w => { });
+            var (thread, mainWindow) = WindowDispatch.CreateWindowOnSTAThread(() => new MainWindow(), w => { });
 
-            DispatchOn(mainWindow, () =>
+            WindowDispatch.DispatchOn(mainWindow, () =>
             {
                 var page1 = new Page1();
                 mainWindow.NavigationHost.Content = page1;
             }, runTestMonitor, TimeSpan.FromSeconds(1));
             
-            DispatchOn(mainWindow, () => Assert.NotNull(mainWindow.NavigationHost.Content), assertionsMonitor, TimeSpan.FromSeconds(1));
-            DispatchOn(mainWindow, () => mainWindow.Close(), windowClosedMonitor, TimeSpan.FromSeconds(1));
+            WindowDispatch.DispatchOn(mainWindow, () => Assert.NotNull(mainWindow.NavigationHost.Content), assertionsMonitor, TimeSpan.FromSeconds(1));
+            WindowDispatch.DispatchOn(mainWindow, () => mainWindow.Close(), windowClosedMonitor, TimeSpan.FromSeconds(1));
         }
 
         [UIFact]
@@ -84,22 +81,22 @@ namespace wpftdd
                 var runTestMonitor = new ManualResetEventSlim(false);
                 var assertionsMonitor = new ManualResetEventSlim(false);
                 
-                context = CreateWindowOnSTAThread(() => new MainWindow(), w => { });
+                context = WindowDispatch.CreateWindowOnSTAThread(() => new MainWindow(), w => { });
 
-                DispatchOn(
+                WindowDispatch.DispatchOn(
                     context.mainWindow, () => routeNavigationService.NavigateTo(Named("Page2")), 
                     runTestMonitor, TimeSpan.FromSeconds(3));
                 
                 Thread.Sleep(1000);
                 
                 Assert.Equal(
-                    GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content),
+                    WindowDispatch.GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content),
                     serviceProvider.GetService<Page2WithVm>()
                 );
 
                 // we need sleeps between navigation to give ui chance to update :)...
                 Thread.Sleep(1000);
-                DispatchOn(context.mainWindow, () =>
+                WindowDispatch.DispatchOn(context.mainWindow, () =>
                 {
                     routeNavigationService.NavigateTo(Named("Page3"));
                 }, runTestMonitor, TimeSpan.FromSeconds(1));
@@ -107,7 +104,7 @@ namespace wpftdd
                 Thread.Sleep(1000);
 
 
-                var property = GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content);
+                var property = WindowDispatch.GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content);
                 Assert.Equal(
                     property,
                     serviceProvider.GetService<Page3WithVm>()
@@ -117,61 +114,6 @@ namespace wpftdd
             }
         }
         
-        private (Thread thread, TWindow window) CreateWindowOnSTAThread<TWindow>(Func<TWindow> createWindow, Action<TWindow> postAction) 
-            where TWindow : Window
-        {
-            TWindow window = null;
-            var waitUntilShow = new ManualResetEventSlim(false);
-            
-            var t = new Thread(() =>
-            {
-                window = createWindow();
-                window.Closed += (s, e) => window.Dispatcher.InvokeShutdown();
-
-                postAction(window);
-
-                waitUntilShow.Set();
-                
-                System.Windows.Threading.Dispatcher.Run();
-            });
-            
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            waitUntilShow.Wait(TimeSpan.FromSeconds(2));
-            Thread.Sleep(100);
-
-            return (t, window);
-        }
         
-        private void DispatchOn(Window window, Action action, ManualResetEventSlim manualResetEvent, TimeSpan timeout)
-        {
-            window.Dispatcher.BeginInvoke(() =>
-            {
-                action();
-                manualResetEvent.Set();
-                
-            }, DispatcherPriority.Normal);
-
-            manualResetEvent.Wait(timeout);
-        }
-        
-        private TProperty GetProperty<TProperty>(Window window, Func<TProperty> getProperty)
-        {
-            ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(false);
-            TimeSpan timeout = TimeSpan.FromSeconds(1);
-
-            TProperty property = default(TProperty);
-            
-            window.Dispatcher.BeginInvoke(() =>
-            {
-                property = getProperty();
-                manualResetEvent.Set();
-                
-            }, DispatcherPriority.Normal);
-
-            manualResetEvent.Wait(timeout);
-
-            return property;
-        }
     }
 }
