@@ -55,7 +55,7 @@ namespace wpftdd
         }
 
         [UIFact]
-        public void Can_navigate_to_different_pages()
+        public void Can_navigate_to_multiple_named_pages()
         {
             using (_serviceProvider.CreateScope())
             {
