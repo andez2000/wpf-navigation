@@ -21,31 +21,27 @@ namespace wpftdd
         private readonly NamedRoute _page2Route = new("Page2", typeof(Page2WithVm));
         private readonly NamedRoute _page3Route = new("Page3", typeof(Page3WithVm));
 
-        [UIFact]
-        public void Can_navigate_to_different_pages()
+        private readonly RouteNavigationService _routeNavigationService;
+        private readonly IServiceProvider _serviceProvider;
+        private (Thread Thread, MainWindow mainWindow) _context;
+        
+        public SetupModuleTdd()
         {
-            (Thread Thread, MainWindow mainWindow) context = new(null, null);
-
-            // configuration
-            Routes routes = new Routes();
+            _context = new(null, null);
+            
+            var routes = new Routes();
             routes.AddAll(_page1Route, _page2Route, _page3Route);
 
-            Views views = new Views();
+            var views = new Views();
             views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
             views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
-            // what to do with page1
-
-            // resolution
-            IServiceProvider serviceProvider = null;
-
+            
             NamedRouteResolver namedRouteResolver = new(routes);
             RouteResolver routeResolver = new(namedRouteResolver);
-            ViewResolver viewResolver = new ViewResolver(views, type => serviceProvider.GetService(type));
-            NavigationController navigationController = new(() => context.mainWindow.NavigationHost.NavigationService);
-            RouteNavigationService routeNavigationService = new(routeResolver, viewResolver, navigationController);
-
-            // add all routes to the container...  what is the scope for each view :?
-            // wire up for DI
+            var viewResolver = new ViewResolver(views, type => _serviceProvider.GetService(type));
+            NavigationController navigationController = new(() => _context.mainWindow.NavigationHost.NavigationService);
+            _routeNavigationService = new(routeResolver, viewResolver, navigationController);
+            
             ServiceCollection serviceCollection = new();
             serviceCollection.AddScoped<Page1>();
             serviceCollection.AddScoped<Page2WithVm>();
@@ -56,42 +52,46 @@ namespace wpftdd
             ContainerBuilder containerBuilder = new();
             containerBuilder.Populate(serviceCollection);
             IContainer container = containerBuilder.Build();
-            serviceProvider = new AutofacServiceProvider(container);
-            using (serviceProvider.CreateScope())
+            _serviceProvider = new AutofacServiceProvider(container);
+        }
+
+        [UIFact]
+        public void Can_navigate_to_different_pages()
+        {
+            using (_serviceProvider.CreateScope())
             {
                 var runTestMonitor = new ManualResetEventSlim(false);
-                var assertionsMonitor = new ManualResetEventSlim(false);
 
-                context = WindowDispatch.CreateWindowOnSTAThread(() => new MainWindow(), w => { });
+                _context = WindowDispatch.CreateWindowOnSTAThread(() => new MainWindow(), w => { });
 
                 WindowDispatch.DispatchOn(
-                    context.mainWindow, () => routeNavigationService.NavigateTo(Named("Page2")),
+                    _context.mainWindow, () => _routeNavigationService.NavigateTo(Named("Page2")),
                     runTestMonitor, TimeSpan.FromSeconds(3));
 
                 Thread.Sleep(1000);
 
                 Assert.Equal(
-                    WindowDispatch.GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content),
-                    serviceProvider.GetService<Page2WithVm>()
+                    WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Content),
+                    _serviceProvider.GetService<Page2WithVm>()
                 );
 
                 // we need sleeps between navigation to give ui chance to update :)...
                 Thread.Sleep(1000);
-                WindowDispatch.DispatchOn(context.mainWindow,
-                    () => { routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
+                WindowDispatch.DispatchOn(_context.mainWindow,
+                    () => { _routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
                     TimeSpan.FromSeconds(1));
 
                 Thread.Sleep(1000);
 
 
-                var property = WindowDispatch.GetProperty(context.mainWindow,
-                    () => context.mainWindow.NavigationHost.Content);
+                var property = WindowDispatch.GetProperty(_context.mainWindow,
+                    () => _context.mainWindow.NavigationHost.Content);
                 Assert.Equal(
                     property,
-                    serviceProvider.GetService<Page3WithVm>()
+                    _serviceProvider.GetService<Page3WithVm>()
                 );
 
-                context.mainWindow?.Dispatcher.BeginInvoke(new ThreadStart(() => context.mainWindow.Close()));
+                _context.mainWindow?.Dispatcher.BeginInvoke(new ThreadStart(() => _context.mainWindow.Close()));
             }
         }
     }
