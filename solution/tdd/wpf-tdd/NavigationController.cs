@@ -19,7 +19,9 @@ namespace acme.wpftdd
         
         public void NavigateTo(Uri uri)
         {
-            _provideNavigationService().Navigate(uri);
+            var navigationService = _provideNavigationService();
+            
+            navigationService.Navigate(uri);
         }
     }
 

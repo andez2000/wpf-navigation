@@ -28,8 +28,6 @@ namespace acme.wpftdd
             _context = new(null, null);
 
             var routes = new Routes();
-            //routes.AddAll(_page1Route);
-
             var views = new Views();
 
             NamedRouteResolver namedRouteResolver = new(routes);
@@ -54,6 +52,9 @@ namespace acme.wpftdd
         [UIFact]
         public void Can_navigate_to_uri_page()
         {
+            Uri uri = new Uri("wpf-tdd;component/WpfApp/Pages/Page1.xaml", UriKind.RelativeOrAbsolute);
+            Uri expectedUri = new Uri("wpf-tdd;component/WpfApp/Pages/Page1.xaml", UriKind.RelativeOrAbsolute);
+            
             using (_serviceProvider.CreateScope())
             {
                 var runTestMonitor = new ManualResetEventSlim(false);
@@ -61,12 +62,18 @@ namespace acme.wpftdd
                 _context = WindowDispatch.CreateWindowOnSTAThread(() => new MainWindow(), w => { });
 
                 WindowDispatch.DispatchOn(
-                    _context.mainWindow, () => _routeNavigationService.NavigateTo(new Uri("/WpfApp/Pages/Page1.xaml", UriKind.RelativeOrAbsolute)),
+                    _context.mainWindow, () => _routeNavigationService.NavigateTo(uri),
                     runTestMonitor, TimeSpan.FromSeconds(3));
 
-                Assert.Equal(
-                    WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Source),
-                    new Uri("/WpfApp/Pages/Page1.xaml", UriKind.RelativeOrAbsolute)
+                Uri property = WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Source);
+                
+                Assert.True(
+                    Uri.Compare(
+                        property,
+                        expectedUri,
+                        UriComponents.AbsoluteUri, 
+                        UriFormat.UriEscaped, 
+                        StringComparison.InvariantCultureIgnoreCase) == 0
                 );
 
                 WindowDispatch.DispatchOnWithWait(
