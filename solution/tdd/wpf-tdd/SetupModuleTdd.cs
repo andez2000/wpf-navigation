@@ -93,12 +93,23 @@ namespace wpftdd
                 Thread.Sleep(1000);
                 
                 // failing here...
+                var property = GetProperty(context.mainWindow, () => context.mainWindow.NavigationHost.Content);
+
+                Assert.Equal(
+                    property,
+                    serviceProvider.GetService<Page2WithVm>()
+                );
+
                 // DispatchOn(
                 //     context.mainWindow, 
-                //     () => Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>()),
+                //     () =>
+                //     {
+                //         Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
+                //     },
                 //     assertionsMonitor, TimeSpan.FromSeconds(3));
+//                Assert.Equal(context.mainWindow.NavigationHost.Content, serviceProvider.GetService<Page2Vm>());
 
-                context.mainWindow.Dispatcher.BeginInvoke(new ThreadStart(() => context.mainWindow.Close()));
+                context.mainWindow?.Dispatcher.BeginInvoke(new ThreadStart(() => context.mainWindow.Close()));
                 
                 // runTestMonitor.Reset();
                 // assertionsMonitor.Reset();
@@ -151,6 +162,25 @@ namespace wpftdd
             }, DispatcherPriority.Normal);
 
             manualResetEvent.Wait(timeout);
+        }
+        
+        private TProperty GetProperty<TProperty>(Window window, Func<TProperty> getProperty)
+        {
+            ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(false);
+            TimeSpan timeout = TimeSpan.FromSeconds(1);
+
+            TProperty property = default(TProperty);
+            
+            window.Dispatcher.BeginInvoke(() =>
+            {
+                property = getProperty();
+                manualResetEvent.Set();
+                
+            }, DispatcherPriority.Normal);
+
+            manualResetEvent.Wait(timeout);
+
+            return property;
         }
     }
 }
