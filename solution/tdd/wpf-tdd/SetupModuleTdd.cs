@@ -24,24 +24,24 @@ namespace wpftdd
         private readonly RouteNavigationService _routeNavigationService;
         private readonly IServiceProvider _serviceProvider;
         private (Thread Thread, MainWindow mainWindow) _context;
-        
+
         public SetupModuleTdd()
         {
             _context = new(null, null);
-            
+
             var routes = new Routes();
             routes.AddAll(_page1Route, _page2Route, _page3Route);
 
             var views = new Views();
             views.Register<Page2WithVm, Page2Vm>((view, dataContext) => view.DataContext = dataContext);
             views.RegisterForAutoDataContext<Page3WithVm, Page3Vm>();
-            
+
             NamedRouteResolver namedRouteResolver = new(routes);
             RouteResolver routeResolver = new(namedRouteResolver);
             var viewResolver = new ViewResolver(views, type => _serviceProvider.GetService(type));
             NavigationController navigationController = new(() => _context.mainWindow.NavigationHost.NavigationService);
             _routeNavigationService = new(routeResolver, viewResolver, navigationController);
-            
+
             ServiceCollection serviceCollection = new();
             serviceCollection.AddScoped<Page1>();
             serviceCollection.AddScoped<Page2WithVm>();
@@ -77,17 +77,14 @@ namespace wpftdd
 
                 // we need sleeps between navigation to give ui chance to update :)...
                 Thread.Sleep(1000);
-                WindowDispatch.DispatchOn(_context.mainWindow,
-                    () => { _routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
+                WindowDispatch.DispatchOn(
+                    _context.mainWindow, () => { _routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
                     TimeSpan.FromSeconds(1));
 
                 Thread.Sleep(1000);
 
-
-                var property = WindowDispatch.GetProperty(_context.mainWindow,
-                    () => _context.mainWindow.NavigationHost.Content);
                 Assert.Equal(
-                    property,
+                    WindowDispatch.GetProperty(_context.mainWindow, () => _context.mainWindow.NavigationHost.Content),
                     _serviceProvider.GetService<Page3WithVm>()
                 );
 
