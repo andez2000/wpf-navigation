@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using static acme.wpftdd.routes.Name;
 
-namespace wpftdd
+namespace acme.wpftdd
 {
     // https://autofaccn.readthedocs.io/en/latest/integration/netcore.html
     // https://stackoverflow.com/questions/13381967/show-wpf-window-from-test-unit

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace wpftdd
+namespace acme.wpftdd
 {
     public class ElementDataContextThing
     {

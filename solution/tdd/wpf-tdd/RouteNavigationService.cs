@@ -2,7 +2,7 @@
 using acme.wpftdd.routes;
 using acme.wpftdd.views;
 
-namespace wpftdd
+namespace acme.wpftdd
 {
     public class RouteNavigationService
     {

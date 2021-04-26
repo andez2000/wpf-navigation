@@ -3,7 +3,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace wpftdd
+namespace acme.wpftdd
 {
     public static class WindowDispatch
     {

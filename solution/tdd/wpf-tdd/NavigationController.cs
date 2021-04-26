@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Navigation;
 
-namespace wpftdd
+namespace acme.wpftdd
 {
     public class NavigationController
     {

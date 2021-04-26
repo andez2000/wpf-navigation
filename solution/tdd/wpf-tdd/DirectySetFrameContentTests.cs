@@ -2,7 +2,6 @@
 using System.Threading;
 using acme.wpftdd.WpfApp.Pages;
 using acme.wpftdd.WpfApp.Windows;
-using wpftdd;
 using Xunit;
 
 namespace acme.wpftdd

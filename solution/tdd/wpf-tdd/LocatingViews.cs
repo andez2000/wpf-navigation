@@ -3,7 +3,6 @@ using acme.wpftdd.WpfApp.Pages;
 using acme.wpftdd.WpfApp.ViewModels;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using wpftdd;
 using Xunit;
 
 namespace acme.wpftdd
