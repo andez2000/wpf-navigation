@@ -84,7 +84,8 @@ namespace acme.wpftdd
                     _serviceProvider.GetService<Page3WithVm>()
                 );
 
-                _context.mainWindow?.Dispatcher.BeginInvoke(new ThreadStart(() => _context.mainWindow.Close()));
+                WindowDispatch.DispatchOnWithWait(
+                    _context.mainWindow, () => _context.mainWindow.Close());
             }
         }
     }

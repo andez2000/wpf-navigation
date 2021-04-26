@@ -45,6 +45,19 @@ namespace acme.wpftdd
             manualResetEvent.Wait(timeout);
         }
 
+        internal static void DispatchOnWithWait(Window window, Action action)
+        {
+            var monitor = new ManualResetEventSlim(false);
+
+            window.Dispatcher.BeginInvoke(() =>
+            {
+                action();
+                monitor.Set();
+            }, DispatcherPriority.Normal);
+
+            monitor.Wait(TimeSpan.FromSeconds(1));
+        }
+
         internal static TProperty GetProperty<TProperty>(Window window, Func<TProperty> getProperty)
         {
             ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(false);
