@@ -44,7 +44,7 @@ namespace wpftdd
         }
 
         [UIFact]
-        public void TddIt()
+        public void Can_navigate_to_different_pages()
         {
             (Thread Thread, MainWindow mainWindow) context = new (null, null);
             
