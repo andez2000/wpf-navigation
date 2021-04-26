@@ -16,7 +16,6 @@ namespace wpftdd
     // https://stackoverflow.com/questions/13381967/show-wpf-window-from-test-unit
     public sealed class SetupModuleTdd
     {
-        // this is wrong
         private readonly NamedRoute _page1Route = new("Page1", typeof(Page1));
         private readonly NamedRoute _page2Route = new("Page2", typeof(Page2WithVm));
         private readonly NamedRoute _page3Route = new("Page3", typeof(Page3WithVm));
