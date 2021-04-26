@@ -1,14 +1,12 @@
 using System;
-using acme.external;
-using acme.external.Pages;
-using acme.external.ViewModels;
+using acme.wpftdd.WpfApp.Pages;
+using acme.wpftdd.WpfApp.ViewModels;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using wpftdd;
 using Xunit;
 
-namespace wpf_tdd
+namespace acme.wpftdd
 {
     public class LocatingViews
     {

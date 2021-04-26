@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace wpftdd.views
+namespace acme.wpftdd.views
 {
     public class ViewResolver
     {

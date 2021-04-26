@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace wpftdd
+namespace acme.wpftdd.WpfApp.Windows
 {
     public partial class MainWindow : Window
     {

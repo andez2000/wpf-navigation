@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using System.Linq;
 
-namespace wpftdd.routes
+namespace acme.wpftdd.routes
 {
     public class Routes
     {

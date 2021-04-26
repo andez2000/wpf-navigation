@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace wpftdd.routes
+namespace acme.wpftdd.routes
 {
     public class NamedRoute : Route
     {

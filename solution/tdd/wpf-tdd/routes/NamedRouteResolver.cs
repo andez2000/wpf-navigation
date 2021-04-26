@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace wpftdd.routes
+namespace acme.wpftdd.routes
 {
     public class NamedRouteResolver
     {

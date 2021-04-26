@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
+﻿using acme.wpftdd.views;
 using Microsoft.Extensions.DependencyInjection;
-using wpftdd.views;
 
-namespace wpftdd.routes
+namespace acme.wpftdd.routes
 {
     public static class ContainerRegistration
     {

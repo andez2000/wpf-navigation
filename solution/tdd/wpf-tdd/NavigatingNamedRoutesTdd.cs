@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading;
-using acme.external.Pages;
-using acme.external.ViewModels;
+using acme.wpftdd.routes;
+using acme.wpftdd.views;
+using acme.wpftdd.WpfApp.Pages;
+using acme.wpftdd.WpfApp.ViewModels;
+using acme.wpftdd.WpfApp.Windows;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using wpftdd.routes;
-using wpftdd.views;
 using Xunit;
-using static wpftdd.routes.Name;
+using static acme.wpftdd.routes.Name;
 
 namespace wpftdd
 {
@@ -37,7 +38,7 @@ namespace wpftdd
 
             NamedRouteResolver namedRouteResolver = new(routes);
             RouteResolver routeResolver = new(namedRouteResolver);
-            var viewResolver = new ViewResolver(views, type => _serviceProvider.GetService(type));
+            ViewResolver viewResolver = new(views, type => _serviceProvider.GetService(type));
             NavigationController navigationController = new(() => _context.mainWindow.NavigationHost.NavigationService);
             _routeNavigationService = new(routeResolver, viewResolver, navigationController);
 
@@ -73,7 +74,7 @@ namespace wpftdd
                 );
 
                 runTestMonitor.Reset();
-                
+
                 WindowDispatch.DispatchOn(
                     _context.mainWindow, () => { _routeNavigationService.NavigateTo(Named("Page3")); }, runTestMonitor,
                     TimeSpan.FromSeconds(1));

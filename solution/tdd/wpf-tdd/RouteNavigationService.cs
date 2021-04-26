@@ -1,6 +1,6 @@
 ﻿using System;
-using wpftdd.routes;
-using wpftdd.views;
+using acme.wpftdd.routes;
+using acme.wpftdd.views;
 
 namespace wpftdd
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace wpftdd.views
+namespace acme.wpftdd.views
 {
     public class Views
     {

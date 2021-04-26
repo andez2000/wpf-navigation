@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
-using acme.external.Pages;
+using acme.wpftdd.WpfApp.Pages;
+using acme.wpftdd.WpfApp.Windows;
+using wpftdd;
 using Xunit;
 
-namespace wpftdd
+namespace acme.wpftdd
 {
     /// <summary>
     /// Tests around WPF and setting content with assertions to test out dispatching in tests only.

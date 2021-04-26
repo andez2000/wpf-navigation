@@ -1,4 +1,4 @@
-﻿namespace wpftdd.routes
+﻿namespace acme.wpftdd.routes
 {
     public record Name
     {

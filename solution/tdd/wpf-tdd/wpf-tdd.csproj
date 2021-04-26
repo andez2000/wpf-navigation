@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <RootNamespace>wpftdd</RootNamespace>
+        <RootNamespace>acme.wpftdd</RootNamespace>
         <UseWPF>true</UseWPF>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -22,10 +22,6 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Xunit.StaFact" Version="1.0.37" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\sources\shared\external-page-lib\external-page-lib.csproj" />
     </ItemGroup>
 
 </Project>
