@@ -27,7 +27,7 @@ namespace acme.wpftdd
         {
             _context = new(null, null);
 
-            var routes = new Routes();
+            var routes = new NamedRoutes();
             var views = new Views();
 
             NamedRouteResolver namedRouteResolver = new(routes);

@@ -5,13 +5,13 @@ namespace acme.wpftdd.routes
 {
     public class NamedRouteResolver
     {
-        private readonly Routes _routes;
+        private readonly NamedRoutes _namedRoutes;
 
-        public NamedRouteResolver(Routes routes) => 
-            _routes = 
-                routes ?? throw new ArgumentNullException(nameof(routes));
+        public NamedRouteResolver(NamedRoutes namedRoutes) => 
+            _namedRoutes = 
+                namedRoutes ?? throw new ArgumentNullException(nameof(namedRoutes));
 
         public Type Resolve(Name routeName) => 
-            _routes.NamedRoutes.FirstOrDefault(r => r.Name == routeName)?.ViewType;
+            _namedRoutes.All.FirstOrDefault(r => r.Name == routeName)?.ViewType;
     }
 }

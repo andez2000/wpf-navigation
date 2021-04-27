@@ -29,7 +29,7 @@ namespace acme.wpftdd
         {
             _context = new(null, null);
 
-            var routes = new Routes();
+            var routes = new NamedRoutes();
             routes.AddAll(_page1Route, _page2Route, _page3Route);
 
             var views = new Views();

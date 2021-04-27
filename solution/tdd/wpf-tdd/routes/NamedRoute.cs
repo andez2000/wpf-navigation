@@ -2,21 +2,43 @@
 
 namespace acme.wpftdd.routes
 {
-    public class NamedRoute : Route
+    /// <summary>
+    /// Defines a named route to a particular type of view.
+    /// </summary>
+    public class NamedRoute
     {
-        private readonly Name _name;
-        private readonly Type _viewType;
-
         public NamedRoute(string name, Type viewType)
         {
-            _name = new Name(name);
-            _viewType = viewType;
+            Name = new Name(name);
+            ViewType = viewType;
         }
 
-        // ReSharper disable once ConvertToAutoProperty
-        public Name Name => _name;
+        /// <summary>
+        /// Gets the route name.
+        /// </summary>
+        public Name Name { get; }
 
-        // ReSharper disable once ConvertToAutoProperty
-        public Type ViewType => _viewType;
+        /// <summary>
+        /// Gets the type of view.
+        /// </summary>
+        public Type ViewType { get; }
+
+        private bool Equals(NamedRoute other)
+        {
+            return Equals(Name, other.Name) && ViewType == other.ViewType;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((NamedRoute) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, ViewType);
+        }
     }
 }
