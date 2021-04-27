@@ -38,3 +38,6 @@ So this project uses a combination of:
 
 * Xunit.StaFact - allows running of WPF resources in tests
 * Autofac - uses the DI to new up new pages and view models when the view and view model is resolved
+
+The concept diagram can be found in the [wiki](https://github.com/andez2000/wpf-navigation/wiki/TDD-Concept).
+
