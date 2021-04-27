@@ -4,6 +4,9 @@ using acme.wpftdd.views;
 
 namespace acme.wpftdd
 {
+    /// <summary>
+    /// Provides the service for navigation of routes.
+    /// </summary>
     public class RouteNavigationService
     {
         private readonly RouteResolver _routeResolver;
@@ -21,6 +24,10 @@ namespace acme.wpftdd
             _navigationController = navigationController ?? throw new ArgumentNullException(nameof(navigationController));
         }
 
+        /// <summary>
+        /// Navigate to the specified named route..
+        /// </summary>
+        /// <param name="routeName">The named route to navigate to.</param>
         public void NavigateTo(Name routeName)
         {
             Type viewType = _routeResolver.ResolveNamedRouteView(routeName);
@@ -29,6 +36,10 @@ namespace acme.wpftdd
             _navigationController.NavigateTo(frameworkElement);
         }
         
+        /// <summary>
+        /// Navigates to a specified Uri.
+        /// </summary>
+        /// <param name="uri">The uri to navigate to.</param>
         public void NavigateTo(Uri uri)
         {
             _navigationController.NavigateTo(uri);
