@@ -1,0 +1,19 @@
+﻿<Window x:Class="acme.foonav.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:acme.foonav.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel>
+        <StackPanel x:Name="ViewModelPanelTop" d:DataContext="{d:DesignInstance viewModels:Parent1}">
+            <Label Content="{Binding Message}"></Label>
+            <Button Command="{Binding Toggle}">Toggle</Button>
+        </StackPanel>
+        <StackPanel x:Name="ViewModelPanelBottom" d:DataContext="{d:DesignInstance viewModels:Parent2}">
+            <Label Content="{Binding Message}"></Label>
+            <Button Command="{Binding Toggle}">Toggle</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>
